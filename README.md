@@ -49,3 +49,37 @@ GET /services?systemVersion=2
 GET /services?systemVersion=3
 [ {name: “Service A”, version: 2”}, {name: “Service B”, version: 1}]
 ```
+
+
+## Curl test script
+
+```bash
+echo Initial check should return empty array
+curl -X GET "http://localhost:8080/api/services?systemVersion=1"
+
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"name": "Service A", "version": 1 }' \
+  http://localhost:8080/api/deploy
+  
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"name": "Service B", "version": 1 }' \
+  http://localhost:8080/api/deploy
+  
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"name": "Service A", "version": 2 }' \
+  http://localhost:8080/api/deploy  
+  
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"name": "Service B", "version": 1 }' \
+  http://localhost:8080/api/deploy  
+    
+curl -X GET "http://localhost:8080/api/services?systemVersion=2"  
+
+curl -X GET "http://localhost:8080/api/services?systemVersion=3"  
+```
+
+
